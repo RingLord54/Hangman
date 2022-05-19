@@ -56,10 +56,8 @@ def make_move():
     if len(places) > 0:
         for i in places:
             Utilities.change(letters[i], END, choice)
-    won = Utilities.isGameWon(letters)
-    if(won):
-        simpledialog.messagebox.showinfo("Hangman", "Congratulations! You win")
-        root.destroy()
+    newLetters = Utilities.new_letters(letters)
+    Utilities.isGameWon(newLetters)
 
 
 # Creates a Button that will allow the player to make a guess
