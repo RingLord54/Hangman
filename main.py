@@ -1,21 +1,58 @@
+import random
 from tkinter import *
 
-root = Tk() # Creates main Application window
+count = 1  # Used for moving through the images
+root = Tk()  # Creates main Application window
 
-root.geometry("1000x800") # Sets the dimensions of the Application window to 1440 x 720
-root.title("Hangman") # Sets the Title of the Application window to "Hangman"
-root.resizable(False, False) # Sets it so that the Application window can't be resized
+root.geometry("1000x800")  # Sets the dimensions of the Application window to 1440 x 720
+root.config(bg="#ebeef2")
+root.title("Hangman")  # Sets the Title of the Application window to "Hangman"
+root.resizable(False, False)  # Sets it so that the Application window can't be resized
 
-Frame_top = Frame( root, bg='red', width=960, height=60) # Creates Frame for Title
-Frame_Lmiddle1 = Frame( root, bg='blue', width=450, height=500 ) # Creates Frame for the Picture
-Frame_Lmiddle2 = Frame( root, bg='green', width=450, height=160 ) # Creates Frame for where the word will be guessed
-Frame_Rmiddle = Frame( root, bg='yellow', width=450, height=350) # Creates Frame for where the wrong letters will appear
+words = ["Hello", "There", "Share", "Drain", "Brain", "Grain"]
+rn = random.randint(0, len(words))
 
-# Places the Frames
-Frame_top.place(x=20, y=20)
-Frame_Lmiddle1.place(x=40, y=100)
-Frame_Lmiddle2.place(x=40, y=620)
-Frame_Rmiddle.place(x=510, y=275)
 
-root.mainloop() # Runs the Application window
+# Creates Title Text Box
+# ----------------------------------
+T1 = Text(root, width=12, height=1)
+T1.place(x=340, y=23)
+T1.config(font=("Courier", 32, "bold"), bg="#ebeef2", highlightthickness=0, borderwidth=0)
+T1.configure(state="normal")
+T1.insert(END, "Hangman Game")
 
+
+# Creates Text Box for the Word to be guessed
+# ----------------------------------
+ranges = [145, 195, 245, 295, 345]
+letters = []
+for i in range(0, 5):
+    T2 = Text(root, width=12, height=1)
+    T2.place(x=ranges[i], y=620)
+    T2.config(font=("Courier", 32, "bold"), bg="#ebeef2", highlightthickness=0, borderwidth=0)
+    T2.configure(state="normal")
+    T2.insert(END, "_")
+    T2.configure(state="disabled")
+    letters.append(T2)
+
+# Creates the Image for the Hangman Game
+# ----------------------------------
+img = PhotoImage(file='Images/Hangman_S1.png')
+L1 = Label(root, image=img, width=450, height=500)
+L1.place(x=40, y=100)
+
+def change():
+    obj = letters[2]
+    obj.configure(state="normal")
+    obj.delete("1.0", "end")
+    obj.insert(END, "H")
+    obj.configure(state="disabled")
+
+# Creates a Button that will allow the player to make a guess
+# ----------------------------------
+B1 = Button(root, text="Make A Guess", command=change)
+B1.config(font=('Courier', 20, 'bold'), bg="#b8b6b6", highlightthickness=0, borderwidth=2)
+B1.place(x=155, y=710)
+
+
+root.mainloop()  # Runs the Application window
