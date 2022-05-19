@@ -1,5 +1,7 @@
 import random
+import Utilities
 from tkinter import *
+from tkinter import simpledialog
 
 count = 1  # Used for moving through the images
 root = Tk()  # Creates main Application window
@@ -9,8 +11,10 @@ root.config(bg="#ebeef2")
 root.title("Hangman")  # Sets the Title of the Application window to "Hangman"
 root.resizable(False, False)  # Sets it so that the Application window can't be resized
 
-words = ["Hello", "There", "Share", "Drain", "Brain", "Grain"]
-rn = random.randint(0, len(words))
+words = ["Hello"]
+rn = 0
+#words = ["Hello", "There", "Share", "Drain", "Brain", "Grain"]
+#rn = random.randint(0, len(words))
 
 
 # Creates Title Text Box
@@ -35,22 +39,32 @@ for i in range(0, 5):
     T2.configure(state="disabled")
     letters.append(T2)
 
+
 # Creates the Image for the Hangman Game
 # ----------------------------------
 img = PhotoImage(file='Images/Hangman_S1.png')
 L1 = Label(root, image=img, width=450, height=500)
 L1.place(x=40, y=100)
 
-def change():
-    obj = letters[2]
-    obj.configure(state="normal")
-    obj.delete("1.0", "end")
-    obj.insert(END, "H")
-    obj.configure(state="disabled")
+
+def make_move():
+    while True:
+        choice = simpledialog.askstring("Hangman", "Guess a Letter")
+        if choice is not None and len(choice) == 1:
+            break
+    places = Utilities.find_indices(words[rn], choice)
+    if len(places) > 0:
+        for i in places:
+            Utilities.change(letters[i], END, choice)
+    won = Utilities.isGameWon(letters)
+    if(won):
+        simpledialog.messagebox.showinfo("Hangman", "Congratulations! You win")
+        root.destroy()
+
 
 # Creates a Button that will allow the player to make a guess
 # ----------------------------------
-B1 = Button(root, text="Make A Guess", command=change)
+B1 = Button(root, text="Make A Guess", command=make_move)
 B1.config(font=('Courier', 20, 'bold'), bg="#b8b6b6", highlightthickness=0, borderwidth=2)
 B1.place(x=155, y=710)
 
