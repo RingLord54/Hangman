@@ -18,11 +18,12 @@ def find_indices(word, letter):
 def new_letters(letters):
     newLetters = []
     for i in letters:
-        newLetters.append(i.get("1.0", "end"))
+        newLetters.append(i.get("1.0", "2.0"))
     return newLetters
 
 
-def isGameWon(letters):
+def new_word(letters):
+    newWord = ""
     for i in letters:
-        if i != "_":
-            print("hullo")
+        newWord += i[0]
+    return newWord
