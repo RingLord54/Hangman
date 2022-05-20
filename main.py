@@ -1,5 +1,6 @@
 import random
 import Utilities
+import words
 from tkinter import *
 from tkinter import simpledialog
 
@@ -7,14 +8,13 @@ wrong = "" # characters that are wrong
 count = 1  # Used for moving through the images
 root = Tk()  # Creates main Application window
 
+
 root.geometry("1000x800")  # Sets the dimensions of the Application window to 1440 x 720
 root.config(bg="#ebeef2")
 root.title("Hangman")  # Sets the Title of the Application window to "Hangman"
 root.resizable(False, False)  # Sets it so that the Application window can't be resized
 
-
-words = ["hello", "there", "share", "drain", "brain", "grain"] # words that can be chosen
-rn = random.randint(0, len(words)-1) # selects a random word from the above list
+rn = random.randint(0, len(words.words)-1) # selects a random word from the above list
 
 
 # Creates Title Text Box
@@ -42,16 +42,16 @@ for i in range(0, 5):
 
 # Creates Text Box for Wrong Answers
 # ----------------------------------
-T3 = Text(root, width=12, height=1)
-T3.place(x=610, y=323)
-T3.config(font=("Courier", 32, "bold"), bg="red", borderwidth=2)
+T3 = Text(root, width=13, height=4)
+T3.place(x=590, y=323)
+T3.config(font=("Courier", 32, "bold"), bg="#bec0c2", borderwidth=2)
 T3.configure(state="normal")
 T3.insert(END, "")
 
 
 # Creates the Image for the Hangman Game
 # ----------------------------------
-img = PhotoImage(file='Images/Hangman_S1.png')
+img = PhotoImage(file='Images/Hangman_S7.png')
 L1 = Label(root, image=img, width=450, height=500)
 L1.place(x=40, y=100)
 
@@ -63,21 +63,20 @@ def make_guess():
         choice = simpledialog.askstring("Hangman", "Guess a Letter")
         if choice is not None and len(choice) == 1:
             break
-    places = Utilities.find_indices(words[rn], choice)
+    places = Utilities.find_indices(words.words[rn], choice)
     if len(places) > 0:
         for i in places:
-            Utilities.change(letters[i], END, choice)
+            Utilities.change(letters[i], END, choice.upper())
         newLetters = Utilities.new_letters(letters)
         newWord = Utilities.new_word(newLetters)
-        if (newWord == words[rn]):
+        if (newWord == words.words[rn].upper()):
             simpledialog.messagebox.showinfo("Hangman", "Congratulations! You Won! Thank you for playing")
             root.destroy()
     else:
-        wrongLetters = T3.get("1.0", "end")
-        wrongLetters += choice
-        wrongLetters = wrongLetters.strip()
-        Utilities.change(T3, END, choice)
-        print(wrongLetters)
+        global wrong
+        if (choice not in wrong):
+            wrong += " " + choice.upper()
+            Utilities.change(T3, END, wrong)
 
 
 # Creates a Button that will allow the player to make a guess

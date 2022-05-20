@@ -1,10 +1,9 @@
 
 def change(letter, END, choice):
-    obj = letter
-    obj.configure(state="normal")
-    obj.delete("1.0", "end")
-    obj.insert(END, choice)
-    obj.configure(state="disabled")
+    letter.configure(state="normal")
+    letter.delete("1.0", "end")
+    letter.insert(END, choice)
+    letter.configure(state="disabled")
 
 
 def find_indices(word, letter):
