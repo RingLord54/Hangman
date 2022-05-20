@@ -4,18 +4,14 @@ import words
 from tkinter import *
 from tkinter import simpledialog
 
-wrong = "" # characters that are wrong
+wrong = ""  # characters that are wrong
 count = 1  # Used for moving through the images
 root = Tk()  # Creates main Application window
-
-
 root.geometry("1000x800")  # Sets the dimensions of the Application window to 1440 x 720
-root.config(bg="#ebeef2")
+root.config(bg="#ebeef2")  # Sets the background colour for the application window to a light-grey
 root.title("Hangman")  # Sets the Title of the Application window to "Hangman"
 root.resizable(False, False)  # Sets it so that the Application window can't be resized
-
-rn = random.randint(0, len(words.words)-1) # selects a random word from the above list
-
+rn = random.randint(0, len(words.words) - 1)  # selects a random word from the above list
 
 # Creates Title Text Box
 # ----------------------------------
@@ -24,7 +20,6 @@ T1.place(x=340, y=23)
 T1.config(font=("Courier", 32, "bold"), bg="#ebeef2", highlightthickness=0, borderwidth=0)
 T1.configure(state="normal")
 T1.insert(END, "Hangman Game")
-
 
 # Creates Text Boxes for the Word that has to be guessed
 # ----------------------------------
@@ -39,7 +34,6 @@ for i in range(0, 5):
     T2.configure(state="disabled")
     letters.append(T2)
 
-
 # Creates Text Box for Wrong Answers
 # ----------------------------------
 T3 = Text(root, width=13, height=4)
@@ -47,7 +41,6 @@ T3.place(x=590, y=323)
 T3.config(font=("Courier", 32, "bold"), bg="#bec0c2", borderwidth=2)
 T3.configure(state="normal")
 T3.insert(END, "")
-
 
 # Creates the Image for the Hangman Game
 # ----------------------------------
@@ -74,7 +67,7 @@ def make_guess():
             root.destroy()
     else:
         global wrong
-        if (choice not in wrong):
+        if choice not in wrong:
             wrong += " " + choice.upper()
             Utilities.change(T3, END, wrong)
 
