@@ -62,7 +62,7 @@ def make_guess():
             Utilities.change(letters[i], END, choice.upper())
         newLetters = Utilities.new_letters(letters)
         newWord = Utilities.new_word(newLetters)
-        if (newWord == words.words[rn].upper()):
+        if newWord == words.words[rn].upper():
             simpledialog.messagebox.showinfo("Hangman", "Congratulations! You Won! Thank you for playing")
             root.destroy()
     else:
