@@ -67,34 +67,27 @@ L1.place(x=40, y=100)
 # Functions allows player to make a guess
 # ----------------------------------
 def make_guess():
-    secret = words.words[rn]
-    while True:
-        choice = simpledialog.askstring("Hangman", "Guess a Letter")
-        if choice is not None and len(choice) == 1:
-            break
-    places = Utilities.find_indices(secret, choice)
+    secret = words.words[rn]  # Declare a variable to store the secret word for easy readability
+    choice = Utilities.user_input()  # Gets the letter guessed by the Player
+    places = Utilities.find_indices(secret, choice)  # Gets an Array of the index positions where the guessed letter appears in the secret word
+
+    # If the letter guessed exists in the word
     if len(places) > 0:
-        for j in places:
-            Utilities.change(letters[j], END, choice.upper())
-        newLetters = Utilities.new_letters(letters)
-        newWord = Utilities.new_word(newLetters)
-        if newWord == secret.upper():
-            simpledialog.messagebox.showinfo("Hangman", "Congratulations! You Won! Thank you for playing")
-            root.destroy()
+        # Replace the * characters with the guessed letter
+        # Also check to see if the word has been guessed correctly yet or not
+        Utilities.update_secret_word(root, END, choice, places, letters, secret)
+
+    # If the letter guessed does not exist in the word
     else:
-        global wrong
-        if choice not in wrong:
-            wrong += " " + choice.upper()
-            Utilities.change(T3, END, wrong)
-    global Turns_Left
-    Turns_Left -= 1
-    updateTurns = f"Turns Left: {Turns_Left}"
-    Utilities.change(T4, END, updateTurns)
+        global wrong  # Crate global variable for the Wrong Answers string
+        wrong = Utilities.update_wrong_answers(choice, T3, END, wrong)  # Add to Wrong Answers
+
+    global Turns_Left  # Create global variable for the Turn Count
+    Turns_Left = Utilities.update_turn_count(Turns_Left, T4, END)  # Update the Displayed Turn Count
+
+    # If the Player has no Turns left
     if Turns_Left == 0:
-        for k in range(0, len(words.words[rn])):
-            Utilities.change(letters[k], END, secret[k].upper())
-        simpledialog.messagebox.showinfo("Hangman", "You Lose. Better Luck Next Time!")
-        root.destroy()
+        Utilities.end_game(root, secret, letters, END)  # Display the Correct word in red and end the game
 
 
 # Creates a Button that will allow the player to make a guess
